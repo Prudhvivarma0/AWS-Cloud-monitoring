@@ -16,7 +16,7 @@ In Part 1, we implement an alerting system to monitor critical root user actions
 - **EventBridge Rule**: Created a rule to trigger alerts on GetCallerIdentity API calls made by the root user.
 - **API Call Alert Testing**: Tested the setup by simulating root API calls and verifying email notifications.
 
-### Part 2: EC2 Instance Setup and CloudWatch Monitoring
+# Part 2: EC2 Instance Setup and CloudWatch Monitoring
 
 In Part 2, we focus on securely configuring an EC2 instance and implementing monitoring to ensure performance and security compliance.
 
