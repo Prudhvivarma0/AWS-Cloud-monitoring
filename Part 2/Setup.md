@@ -76,7 +76,7 @@ Restart SSH:
 
 
 
-Conclusion
+## Conclusion
 By following this guide, you've successfully set up a secure EC2 instance with restricted SSH access, basic firewall rules, and a monitored environment using CloudWatch. 
 These steps ensure that your instance is not only accessible in a secure manner but also capable of alerting you to potential performance issues. Regular updates, 
 limited access, and monitoring are crucial for maintaining a safe and efficient cloud environment.
