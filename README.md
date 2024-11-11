@@ -3,6 +3,7 @@ This repository contains a two-part project designed to establish a secure, moni
 
 # Prerequisites
 AWS Free Tier account with basic setup completed
+
 AWS CLI installed and configured
 
 
