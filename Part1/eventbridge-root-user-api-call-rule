@@ -1,0 +1,11 @@
+{
+  "source": ["aws.sts"],                        // Source of the event; here, it's the Security Token Service (STS).
+  "detail-type": ["AWS API Call via CloudTrail"], // Specifies the type of event to capture.
+  "detail": {
+    "eventSource": ["sts.amazonaws.com"],        // Filters for events coming from STS.
+    "eventName": ["GetCallerIdentity"],          // Monitors the specific API call "GetCallerIdentity".
+    "userIdentity": {
+      "type": ["Root"]                           // Filters for events triggered by the root user.
+    }
+  }
+}
