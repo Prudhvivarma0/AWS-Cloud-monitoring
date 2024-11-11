@@ -34,32 +34,44 @@ This guide outlines the steps to set up an EC2 instance with SSH access, firewal
 ## Step 4: Update and Secure Your Instance
 
 Update packages:
+
 1.sudo yum update -y
 
 Install security updates:
+
 1. sudo yum upgrade -y
 
 Create a new user and grant sudo privileges:
+
 1.sudo adduser newuser
+
 2. sudo usermod -aG wheel newuser
 
 Edit SSH config to disable root login and allow only key-based authentication:
+
 Open the config file:
 
 1.sudo vi /etc/ssh/sshd_config
+
 2.Set PermitRootLogin no and PasswordAuthentication no.
 
 Restart SSH:
+
 1. sudo systemctl restart sshd
 
 
 ## Step 5: Set Up CloudWatch for Monitoring
 
 1.Go to CloudWatch in the AWS Console.
+
 2.In Alarms, click Create Alarm.
+
 3.Choose the CPUUtilization metric for your instance.
+
 4.Set the threshold to trigger when CPU utilization > 80% for 5 minutes.
+
 5.Add notifications via an SNS topic with your email.
+
 6.Review and create the alarm.
 
 
@@ -71,13 +83,19 @@ limited access, and monitoring are crucial for maintaining a safe and efficient 
 
 ## Step 6: Testing
 1. Test SSH Access: Attempt to SSH into your instance from your IP to ensure connection, and confirm that SSH access from unauthorized IPs is denied.
+   
 2.Monitor CloudWatch Alarm:
+
 Temporarily increase CPU utilization on the instance to test the CloudWatch alarm. Run the following command to create CPU load:
+
 yes > /dev/null &
+
 Wait 5 minutes to see if the alarm triggers an alert.
 
 Once the alarm has been tested, terminate the CPU load process with:
+
 killall yes
 
 Email Notification: Check your email for the SNS notification to confirm it’s configured correctly.
+
 Testing these steps ensures that the EC2 instance, security configurations, and CloudWatch monitoring are all set up and functioning as intended.
