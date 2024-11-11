@@ -1,0 +1,101 @@
+# Setup Instructions for AWS Monitoring and Alerting System
+
+This file outlines the steps to set up monitoring and alerting for root API calls using AWS CloudTrail, SNS, and EventBridge.
+
+---
+
+## Step 1: Set Up CloudTrail
+
+1. **Navigate to CloudTrail in the AWS Console**:
+   - In the AWS Management Console, search for "CloudTrail" and open it.
+
+2. **Create a New Trail**:
+   - Go to the **Trails** section and click on **Create trail**.
+   - **Trail Name**: Enter a name for your trail (e.g., `RootUserTrail`).
+
+3. **Configure Trail Details**:
+   - **Storage Location**: Select "Create new S3 bucket" and provide a unique name for the bucket (e.g., `my-cloudtrail-logs-uniqueid`).
+   - **Log Events**: Ensure "Management events" is enabled with "Read/Write" set to "All".
+   - **Apply trail to all regions**: Enable this option to ensure full coverage.
+
+4. **Advanced Settings**:
+   - Optional: Enable **Log file validation** if required.
+
+5. **Create the Trail**:
+   - Click **Create trail** and wait for it to set up.
+
+---
+
+## Step 2: Configure SNS for Email Notifications
+
+1. **Navigate to SNS in the AWS Console**:
+   - Search for "SNS" in the AWS Console and open it.
+
+2. **Create an SNS Topic**:
+   - Go to **Topics** and click on **Create topic**.
+   - **Type**: Choose "Standard".
+   - **Name**: Enter a name for the topic (e.g., `RootUserAlerts`).
+   - Click **Create topic**.
+
+3. **Subscribe to the Topic**:
+   - Click on the topic you just created, then click **Create subscription**.
+   - **Protocol**: Select "Email".
+   - **Endpoint**: Enter your email address for receiving alerts.
+   - Confirm the subscription by checking your email and clicking the confirmation link.
+
+4. **Enable SNS Notifications in CloudTrail**:
+   - Go back to **CloudTrail** and select your trail.
+   - Click **Edit** in the "Trail settings" section.
+   - Under SNS notifications, select your SNS topic (e.g., `RootUserAlerts`) and enable notifications.
+   - Save the changes.
+
+---
+
+## Step 3: Set Up EventBridge Rule for Root User API Call
+
+1. **Navigate to EventBridge in the AWS Console**:
+   - Search for "EventBridge" and open it.
+
+2. **Create a Rule**:
+   - Go to **Rules** and click **Create rule**.
+   - **Name**: Enter a name for the rule (e.g., `RootUserGetCallerIdentityAlert`).
+   - **Event Bus**: Select "AWS default event bus".
+   - **Rule Type**: Choose "Rule with an event pattern".
+
+3. **Define the Event Pattern**:
+   - Select **Custom patterns (JSON editor)** and paste in the contents of `eventbridge-root-user-api-call-rule.json` (see accompanying file).
+   - This JSON code sets up the rule to monitor `GetCallerIdentity` API calls by the root user.
+
+4. **Add SNS as the Target**:
+   - Under **Target**, choose "AWS service" and select "SNS topic" as the target type.
+   - Choose the SNS topic you created (e.g., `RootUserAlerts`).
+
+5. **Configure Permissions (if prompted)**:
+   - Allow EventBridge to create a role with permissions to publish to the SNS topic.
+
+6. **Create the Rule**:
+   - Review your settings and click **Create rule**.
+
+---
+
+## Step 4: Test the Setup Using AWS CLI
+
+1. **Install and Configure the AWS CLI**:
+   - If you haven’t already, install the AWS CLI and configure it with your credentials:
+     ```bash
+     aws configure
+     ```
+
+2. **Test the Event with GetCallerIdentity Command**:
+   - Open your terminal and run:
+     ```bash
+     aws sts get-caller-identity
+     ```
+
+3. **Check CloudTrail Logs and SNS Notification**:
+   - Go to the **CloudTrail** console and check the **Event history** for the `GetCallerIdentity` event.
+   - Verify that you received an email notification for the event.
+
+---
+
+These steps will help you set up, configure, and test the monitoring and alerting system for AWS root user actions.
